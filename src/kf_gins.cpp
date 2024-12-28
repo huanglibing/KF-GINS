@@ -39,9 +39,20 @@ void writeSTD(double time, Eigen::MatrixXd &cov, FileSaver &stdfile);
 
 int main(int argc, char *argv[]) {
 
-    if (argc != 2) {
-        std::cout << "usage: KF-GINS kf-gins.yaml" << std::endl;
-        return -1;
+    // if (argc != 2) {
+    //     std::cout << "usage: KF-GINS kf-gins.yaml" << std::endl;
+    //     return -1;
+    // }
+
+    // Determine the configuration file path
+    std::string config_path;
+
+    if (argc == 2) {
+        config_path = argv[1];
+    } else {
+        config_path = "../dataset/kf-gins.yaml";  // Default configuration path
+        std::cout << "No configuration file provided. Using default: "
+                  << config_path << std::endl;
     }
 
     std::cout << std::endl << "KF-GINS: An EKF-Based GNSS/INS Integrated Navigation System" << std::endl << std::endl;
@@ -51,7 +62,7 @@ int main(int argc, char *argv[]) {
     // load configuration file
     YAML::Node config;
     try {
-        config = YAML::LoadFile(argv[1]);
+        config = YAML::LoadFile(config_path);
     } catch (YAML::Exception &exception) {
         std::cout << "Failed to read configuration file. Please check the path and format of the configuration file!"
                   << std::endl;
